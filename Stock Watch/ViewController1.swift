@@ -19,17 +19,13 @@ class ViewController1 : UIViewController, UITableViewDataSource, UITableViewDele
     @IBAction func actionSearch(_ sender: Any) {
         let symbol = textFieldSymbol.text
         if (symbol!.isEmpty) {
-            let ac = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-            ac.message = "Symbol cannot be empty"
-            let submitAction = UIAlertAction(title: "OK", style: .default)
-            ac.addAction(submitAction)
-            self.present(ac, animated: true)
+            showAlert(message: "Symbol cannot be empty")
             return
         }
         textFieldSymbol.resignFirstResponder()
         loading.startAnimating()
         loading.isHidden = false
-        viewModel.fetchStockForSymbol(symbol!)
+        viewModel.fetchStockForSymbol(symbol!.uppercased())
     }
     
     @IBAction func actionSort(_ sender: Any) {
@@ -64,7 +60,10 @@ class ViewController1 : UIViewController, UITableViewDataSource, UITableViewDele
         viewModel.stock.bind {[weak self] data in
             self!.loading.stopAnimating()
             self!.loading.isHidden = true
-            if (data == nil) {
+            if (data != nil && data!.arrayIntraDay == nil) {
+                self!.showAlert(message: "No stock data found")
+                return
+            } else if (data == nil) {
                 return
             }
             self?.stock = data!

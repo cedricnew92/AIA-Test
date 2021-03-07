@@ -26,32 +26,27 @@ class ViewController2: UIViewController, UITableViewDataSource, UITableViewDeleg
     @IBAction func actionAdd(_ sender: Any) {
         let symbol = textFieldSymbol.text
         if (symbol!.isEmpty) {
-            let ac = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-            ac.message = "Symbol cannot be empty"
-            let submitAction = UIAlertAction(title: "OK", style: .default)
-            ac.addAction(submitAction)
-            self.present(ac, animated: true)
+            showAlert(message: "Symbol cannot be empty")
             return
         }
         if (compare.count == 3) {
-            let ac = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-            ac.message = "You're only allowed to compare up to 3 symbol"
-            let submitAction = UIAlertAction(title: "OK", style: .default)
-            ac.addAction(submitAction)
-            self.present(ac, animated: true)
+            showAlert(message: "You're only allowed to compare up to 3 symbols")
             return
         }
         textFieldSymbol.endEditing(true)
         loading.startAnimating()
         loading.isHidden = false
-        viewModel.fetchStockForSymbol(symbol!)
+        viewModel.fetchStockForSymbol(symbol!.uppercased())
     }
     
     override func viewDidLoad() {
         viewModel.stock.bind {[weak self] data in
             self!.loading.stopAnimating()
             self!.loading.isHidden = true
-            if (data == nil) {
+            if (data != nil && data!.arrayDailyAdjusted == nil) {
+                self!.showAlert(message: "No stock data found")
+                return
+            } else if (data == nil) {
                 return
             }
             let label = UILabel()
