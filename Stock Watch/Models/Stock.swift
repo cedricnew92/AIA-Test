@@ -35,38 +35,34 @@ struct Stock: Codable {
     var arrayDailyAdjusted : Array<(String, Float, Float, Float, Float, Float, Float, Float, Float)>?
     
     mutating func convertDictToArray() {
+        self.arrayIntraDay = []
+        self.arrayDailyAdjusted = []
         if (timeSeries1Min != nil) {
-            self.arrayIntraDay = []
             for (key, value) in timeSeries1Min! {
                 arrayIntraDay?.append((key, value.open, value.high, value.low, value.close, value.volume))
             }
         }
         if (timeSeries5Min != nil) {
-            self.arrayIntraDay = []
             for (key, value) in timeSeries5Min! {
                 arrayIntraDay?.append((key, value.open, value.high, value.low, value.close, value.volume))
             }
         }
         if (timeSeries15Min != nil) {
-            self.arrayIntraDay = []
             for (key, value) in timeSeries15Min! {
                 arrayIntraDay?.append((key, value.open, value.high, value.low, value.close, value.volume))
             }
         }
         if (timeSeries30Min != nil) {
-            self.arrayIntraDay = []
             for (key, value) in timeSeries30Min! {
                 arrayIntraDay?.append((key, value.open, value.high, value.low, value.close, value.volume))
             }
         }
         if (timeSeries60Min != nil) {
-            self.arrayIntraDay = []
             for (key, value) in timeSeries60Min! {
                 arrayIntraDay?.append((key, value.open, value.high, value.low, value.close, value.volume))
             }
         }
         if (timeSeriesDaily != nil) {
-            self.arrayDailyAdjusted = []
             for (key, value) in timeSeriesDaily! {
                 arrayDailyAdjusted?.append((key, value.open, value.high, value.low, value.close, value.adjustedClose, value.volume, value.dividend, value.coefficient))
             }

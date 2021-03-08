@@ -60,7 +60,7 @@ class ViewController1 : UIViewController, UITableViewDataSource, UITableViewDele
         viewModel.stock.bind {[weak self] data in
             self!.loading.stopAnimating()
             self!.loading.isHidden = true
-            if (data != nil && data!.arrayIntraDay == nil) {
+            if (data != nil && data!.arrayIntraDay!.isEmpty) {
                 self!.showAlert(message: "No stock data found")
                 return
             } else if (data == nil) {
